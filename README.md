@@ -1,2 +1,2 @@
-# deutsch_learning
+# deutsch_meister
 The app helping with learning language.
