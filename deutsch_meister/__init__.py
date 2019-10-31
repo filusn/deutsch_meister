@@ -1,0 +1,1 @@
+from deutsch_meister.meister import app
