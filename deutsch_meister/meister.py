@@ -1,25 +1,25 @@
-from starlette.applications import Starlette
-from starlette.responses import JSONResponse
-import uvicorn
+from flask import Flask, render_template
+from flask_pymongo import PyMongo
 
 
-def create_app():
-
-    app = Starlette(debug=False)
-
-    @app.route('/')
-    async def homepage(response):
-        return JSONResponse({'Hello, ': 'World!'})
-
-    @app.on_event("startup")
-    async def create_db_client():
-        # start client here and reuse in future requests <mongodb>
+app = Flask(__name__)
+app.config["MONGO_URI"] = "mongodb://localhost:27017/deutschMeisterDB"
+app.config["MONGO_DBNAME"] = 'Words'
+mongo = PyMongo(app)
+db = mongo.db
+col = mongo.db['Words']
+col.insert_one({'aa': 'bb'})
+print(mongo.db.Words.find_one())
 
 
-    @app.on_event("shutdown")
-    async def shutdown_db_client():
-        # stop client here
+@app.route('/')
+def index():
+#     # return render_template('index.html') 
+    print(list(mongo.db.Words.find()))
+    return str(list(mongo.db.Words.find()))
+    # doc = mongo.db.words.insert({'aaa': 'aaa'})
+    # return "Inserted"
 
-    return app
-
-app = create_app()
+# if __name__ == '__main__':
+#   app.run(host='127.0.0.1', port=8000, debug=True)
+ 
